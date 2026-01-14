@@ -1,1 +1,0 @@
-PsExec.exe -accepteula \\55.156.4.58 ipconfig
