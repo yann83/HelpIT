@@ -165,7 +165,7 @@ cython_debug/
 #  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
-#.idea/
+.idea/
 
 # Ruff stuff:
 .ruff_cache/
@@ -179,3 +179,34 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# others
+bak/
+bin/
+build/
+dist/
+distr/
+tmp/
+desktop.ini
+admin_main.cmd
+admin_mont_drive.cmd
+admin_test_double_windows.cmd
+admin_test_psexec.cmd
+admin_test_services.cmd
+compile_simple.bat
+compile_with_spec.bat
+compile_with_spec_debug.bat
+config.sqlite
+HelpIT.log
+helpit.spec
+helpit_debug.spec
+psexec_utilisation.md
+test_credential.py
+test_credentials.py
+test_double_windows - Copie.py
+test_double_windows.py
+test_msra.py
+test_process.py
+test_psexec.py
+test_services.py
+ToDo.md
