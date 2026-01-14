@@ -1,0 +1,301 @@
+id;name;etat
+AdobeARMservice;Adobe Acrobat Update Service;STOPPED
+AdobeFlashPlayerUpdateSvc;Adobe Flash Player Update Service;STOPPED
+AJRouter;Service de routeur AllJoyn;STOPPED
+ALG;Service de la passerelle de la couche Application;STOPPED
+AppIDSvc;Identité de l'application;STOPPED
+Appinfo;Informations d'application;RUNNING
+AppMgmt;Gestion d'applications;STOPPED
+AppReadiness;Préparation des applications;STOPPED
+AppVClient;Microsoft App-V Client;STOPPED
+AppXSvc;Service de déploiement AppX (AppXSVC);STOPPED
+AssignedAccessManagerSvc;Service AssignedAccessManager;STOPPED
+AudioEndpointBuilder;Générateur de points de terminaison du service Audio Windows;RUNNING
+Audiosrv;Audio Windows;RUNNING
+autotimesvc;Heure cellulaire;STOPPED
+AxInstSV;Programme d'installation ActiveX (AxInstSV);STOPPED
+BDESVC;Service de chiffrement de lecteur BitLocker;RUNNING
+BFE;Moteur de filtrage de base;RUNNING
+BITS;Service de transfert intelligent en arrière-plan;RUNNING
+BrokerInfrastructure;Service d'infrastructure des tâches en arrière-plan;RUNNING
+BTAGService;Service de passerelle audio Bluetooth;STOPPED
+BthAvctpSvc;Service AVCTP;STOPPED
+bthserv;Service de prise en charge Bluetooth;STOPPED
+camsvc;Service Gestionnaire d'accès aux fonctionnalités;STOPPED
+CDPSvc;Service de plateforme des appareils connectés;RUNNING
+CertPropSvc;Propagation du certificat;RUNNING
+ClipSVC;Service de licences de client (ClipSVC);STOPPED
+cloudidsvc;Service d'identité de Microsoft Cloud;STOPPED
+COMSysApp;Application système COM+;STOPPED
+CoreMessagingRegistrar;CoreMessaging;RUNNING
+CryptSvc;Services de chiffrement;RUNNING
+CscService;Fichiers hors connexion;STOPPED
+csc_swgagent;Cisco Secure Client - Umbrella SWG Agent;STOPPED
+csc_umbrellaagent;Cisco Secure Client - Umbrella Agent;RUNNING
+csc_vpnagent;Cisco Secure Client - AnyConnect VPN Agent;RUNNING
+CxAudioSvc;CxAudioSvc Service;RUNNING
+CxUIUSvc;CxUIUSvc Service;STOPPED
+DcomLaunch;Lanceur de processus serveur DCOM;RUNNING
+dcsvc;Declared Configuration(DC) service;STOPPED
+defragsvc;Optimiser les lecteurs;STOPPED
+DeviceAssociationService;Service d'association de périphérique;STOPPED
+DeviceInstall;Service d'installation de périphérique;STOPPED
+DevQueryBroker;Service Broker de découverte en arrière-plan DevQuery;STOPPED
+Dhcp;Client DHCP;RUNNING
+diagnosticshub.standardcollector.service;Service Collecteur standard du concentrateur de diagnostic Microsoft (R);STOPPED
+diagsvc;Diagnostic Execution Service;STOPPED
+DiagTrack;Expériences des utilisateurs connectés et télémétrie;RUNNING
+DialogBlockingService;DialogBlockingService;STOPPED
+DispBrokerDesktopSvc;Service de stratégie d'affichage;RUNNING
+DisplayEnhancementService;Service d'amélioration de l'affichage;STOPPED
+DmEnrollmentSvc;Service d'inscription de la gestion des périphériques;STOPPED
+dmwappushservice;Service de routage de messages Push du protocole WAP (Wireless Application Protocol) de gestion des appareils;STOPPED
+Dnscache;Client DNS;RUNNING
+DoSvc;Optimisation de livraison;STOPPED
+dot3svc;Configuration automatique de réseau câblé;RUNNING
+DPS;Service de stratégie de diagnostic;RUNNING
+DsmSvc;Gestionnaire d'installation de périphérique;STOPPED
+DsSvc;Service de partage des données;RUNNING
+DusmSvc;Consommation des données;RUNNING
+Eaphost;Protocole EAP (Extensible Authentication Protocol);RUNNING
+edgeupdate;Service Mise à jour de Microsoft Edge (edgeupdate);STOPPED
+edgeupdatem;Service Mise à jour de Microsoft Edge (edgeupdatem);STOPPED
+EFS;Système de fichiers EFS (Encrypting File System);RUNNING
+embeddedmode;Mode incorporé;STOPPED
+EntAppSvc;Service de gestion des applications d'entreprise;STOPPED
+EPIntegrationService;TEHTRIS Endpoint Integration Service;RUNNING
+EPProtectedService;TEHTRIS Endpoint Protected Service;RUNNING
+EPRedline;TEHTRIS Endpoint Redline Service;RUNNING
+EPSecurityService;TEHTRIS Endpoint Security Service;RUNNING
+EPUpdateService;TEHTRIS Endpoint Update Service;RUNNING
+EsaAppIdSvc;SES Evolution Application identifier Service;RUNNING
+EsaCommSvc;SES Evolution Communication Service;RUNNING
+EsaDiagSrvSvc;SES Evolution Diagnostic Server Service;STOPPED
+EsaGuardSvc;SES Evolution Guard Service;RUNNING
+EsaGuiSrvSvc;SES Evolution GUI Server Service;RUNNING
+EsaInjectSvc;SES Evolution Injection Service;RUNNING
+EsaLogSvc;SES Evolution Logging Service;RUNNING
+EsaPolicySvc;SES Evolution Policy Service;RUNNING
+EsaResponseSvc;SES Evolution Response Service;RUNNING
+EsaScriptSvc;SES Evolution Script Service;RUNNING
+EsaUpdateSvc;SES Evolution Update Service;STOPPED
+EsaUsbCtrlSvc;SES Evolution USB Control Service;RUNNING
+EsaWirelessCtrlSvc;SES Evolution Wireless Control Service;RUNNING
+EventLog;Journal d'événements Windows;RUNNING
+EventSystem;Système d'événement COM+;RUNNING
+EvidianSENS;Enterprise Access Management Session Manager;RUNNING
+EvidianWGSS;Enterprise Access Management Security Services;RUNNING
+Fax;Télécopie;STOPPED
+fdPHost;Hôte du fournisseur de découverte de fonctions;STOPPED
+FDResPub;Publication des ressources de découverte de fonctions;STOPPED
+fhsvc;Service d'historique des fichiers;STOPPED
+FontCache;Service de cache de police Windows;RUNNING
+FontCache3.0.0.0;Cache de police de Windows Presentation Foundation 3.0.0.0;STOPPED
+FrameServer;Serveur de trame de la Caméra Windows;STOPPED
+FusionInventory-Agent;FusionInventory Agent;RUNNING
+GameInputSvc;GameInput Service;STOPPED
+gpsvc;Client de stratégie de groupe;RUNNING
+GraphicsPerfSvc;GraphicsPerfSvc;STOPPED
+hidserv;Service du périphérique d'interface utilisateur;STOPPED
+HvHost;Service d'hôte HV;STOPPED
+iaStorAfsService;Intel(R) Optane(TM) Memory Service;STOPPED
+icssvc;Service Point d'accès sans fil mobile Windows;STOPPED
+IKEEXT;Modules de génération de clés IKE et AuthIP;RUNNING
+InstallService;Installation du service Microsoft Store;RUNNING
+Intel(R) Capability Licensing Service TCP IP Interface;Intel(R) Capability Licensing Service TCP IP Interface;STOPPED
+Intel(R) TPM Provisioning Service;Intel(R) TPM Provisioning Service;STOPPED
+iphlpsvc;Assistance IP;RUNNING
+IpxlatCfgSvc;Service de configuration de conversion IP;STOPPED
+jhi_service;Intel(R) Dynamic Application Loader Host Interface Service;RUNNING
+KeyIso;Isolation de clé CNG;RUNNING
+KtmRm;Service KtmRm pour Distributed Transaction Coordinator;STOPPED
+LanmanServer;Serveur;RUNNING
+LanmanWorkstation;Station de travail;RUNNING
+lfsvc;Service de géolocalisation;RUNNING
+LicenseManager;Serveur Gestionnaire de licences Windows;RUNNING
+lltdsvc;Mappage de découverte de topologie de la couche de liaison;STOPPED
+lmhosts;Assistance NetBIOS sur TCP/IP;RUNNING
+LMS;Intel(R) Management and Security Application Local Management Service;RUNNING
+LSM;Gestionnaire de session locale;RUNNING
+LxpSvc;Service d'expérience linguistique;STOPPED
+MapsBroker;Gestionnaire des cartes téléchargées;STOPPED
+McpManagementService;McpManagementService;STOPPED
+MicrosoftEdgeElevationService;Microsoft Edge Elevation Service (MicrosoftEdgeElevationService);STOPPED
+MixedRealityOpenXRSvc;Windows Mixed Reality OpenXR Service;STOPPED
+mpssvc;Pare-feu Windows Defender;RUNNING
+MSDTC;Coordinateur de transactions distribuées;STOPPED
+MSiSCSI;Service Initiateur iSCSI de Microsoft;RUNNING
+msiserver;Windows Installer;RUNNING
+MsKeyboardFilter;Filtre clavier Microsoft;STOPPED
+NaturalAuthentication;Authentification naturelle;STOPPED
+NcaSvc;Assistant Connectivité réseau;STOPPED
+NcbService;Service Broker pour les connexions réseau;RUNNING
+NcdAutoSetup;Configuration automatique des périphériques connectés au réseau;STOPPED
+Netlogon;Netlogon;RUNNING
+Netman;Connexions réseau;STOPPED
+netprofm;Service Liste des réseaux;RUNNING
+NetSetupSvc;Service Configuration du réseau;STOPPED
+NetTcpPortSharing;Service de partage de ports Net.Tcp;STOPPED
+Nexthink Coordinator;Nexthink Coordinator;RUNNING
+Nexthink Service;Nexthink Collector Service;RUNNING
+NgcCtnrSvc;Conteneur Microsoft Passport;STOPPED
+NgcSvc;Microsoft Passport;STOPPED
+NlaSvc;Connaissance des emplacements réseau;RUNNING
+nsi;Service Interface du magasin réseau;RUNNING
+NVDisplay.ContainerLocalSystem;NVIDIA Display Container LS;RUNNING
+NVWMI;NVWMI;RUNNING
+OCS Inventory Service;OCS Inventory Service;RUNNING
+ose64;Office 64 Source Engine;STOPPED
+p2pimsvc;Gestionnaire d'identité réseau homologue;RUNNING
+p2psvc;Groupement de mise en réseau de pairs;STOPPED
+PcaSvc;Service de l'Assistant Compatibilité des programmes;RUNNING
+PeerDistSvc;BranchCache;STOPPED
+perceptionsimulation;Service de simulation de perception Windows;STOPPED
+PerfHost;Hôte de DLL de compteur de performance;STOPPED
+PhoneSvc;Service téléphonique;STOPPED
+pla;Journaux & alertes de performance;STOPPED
+PlugPlay;Plug-and-Play;RUNNING
+PNRPAutoReg;Service de publication des noms d'ordinateurs PNRP;STOPPED
+PNRPsvc;Protocole PNRP;RUNNING
+PolicyAgent;Agent de stratégie IPsec;RUNNING
+Power;Alimentation;RUNNING
+PrintNotify;Extensions et notifications d'imprimante;STOPPED
+ProfSvc;Service de profil utilisateur;RUNNING
+pulseagent;Pulse agent;RUNNING
+pulsenetworknotify;Pulse network notify;RUNNING
+PulseSecureService;Ivanti Secure Access Client Service;RUNNING
+PushToInstall;Service PushToInstall de Windows;STOPPED
+QWAVE;Expérience audio-vidéo haute qualité Windows;STOPPED
+RasAuto;Gestionnaire des connexions automatiques d'accès à distance;STOPPED
+RasMan;Gestionnaire des connexions d'accès à distance;RUNNING
+RemoteAccess;Routage et accès distant;STOPPED
+RemoteRegistry;Registre à distance;STOPPED
+RetailDemo;Service de démo du magasin;STOPPED
+RmSvc;Service de gestion radio;RUNNING
+RpcEptMapper;Mappeur de point de terminaison RPC;RUNNING
+RpcLocator;Localisateur d'appels de procédure distante (RPC);STOPPED
+RpcSs;Appel de procédure distante (RPC);RUNNING
+RstMwService;RstMwService;RUNNING
+SamSs;Gestionnaire de comptes de sécurité;RUNNING
+SCardSvr;Carte à puce;RUNNING
+ScDeviceEnum;Service d'énumération de périphériques de carte à puce;RUNNING
+Schedule;Planificateur de tâches;RUNNING
+SCPolicySvc;Stratégie de retrait de la carte à puce;STOPPED
+SDRSVC;Sauvegarde Windows;STOPPED
+seclogon;Ouverture de session secondaire;STOPPED
+SECOMNService;Sound Research SECOMN Service;RUNNING
+SecurityHealthService;Service Sécurité Windows;RUNNING
+SEMgrSvc;Gestionnaires des paiements et des éléments sécurisés NFC;STOPPED
+SENS;Service de notification d'événements système;RUNNING
+Sense;Windows Defender Advanced Threat Protection Service;STOPPED
+SensorDataService;Service Données de capteur;STOPPED
+SensorService;Service de capteur;STOPPED
+SensrSvc;Service de surveillance des capteurs;STOPPED
+SessionEnv;Configuration des services Bureau à distance;RUNNING
+SharedAccess;Partage de connexion Internet (ICS);STOPPED
+SharedRealitySvc;Service de données spatiales;STOPPED
+ShellHWDetection;Détection matériel noyau;RUNNING
+shpamsvc;Shared PC Account Manager;STOPPED
+smphost;SMP de l'Espace de stockages Microsoft;RUNNING
+SmsRouter;Service Routeur SMS Microsoft Windows.;STOPPED
+SNMPTRAP;Interruption SNMP;STOPPED
+spectrum;Service de perception Windows;STOPPED
+Spooler;Spouleur d'impression;RUNNING
+sppsvc;Protection logicielle;STOPPED
+SSDPSRV;Découverte SSDP;RUNNING
+ssh-agent;OpenSSH Authentication Agent;STOPPED
+sshdaemon;Pulse SSH Server;RUNNING
+SstpSvc;Service SSTP (Secure Socket Tunneling Protocol);RUNNING
+StateRepository;Service State Repository (StateRepository);RUNNING
+stisvc;Acquisition d'image Windows (WIA);STOPPED
+StorSvc;Service de stockage;RUNNING
+svsvc;Vérificateur de points;STOPPED
+swprv;Fournisseur de cliché instantané de logiciel Microsoft;STOPPED
+SysMain;SysMain;STOPPED
+SystemEventsBroker;Service Broker des événements système;RUNNING
+TabletInputService;Service du clavier tactile et du volet d'écriture manuscrite;RUNNING
+TapiSrv;Téléphonie;STOPPED
+TehtrisEPP;TehtrisEPP Agent;RUNNING
+TermService;Services Bureau à distance;RUNNING
+Themes;Thèmes;RUNNING
+TieringEngineService;Gestion des niveaux de stockage;STOPPED
+TimeBrokerSvc;Service Broker pour les événements horaires;RUNNING
+TokenBroker;Gestionnaire de comptes web;RUNNING
+TrkWks;Client de suivi de lien distribué;RUNNING
+TroubleshootingSvc;Service de résolution des problèmes recommandé;STOPPED
+TrustedInstaller;Programme d'installation pour les modules Windows;RUNNING
+tzautoupdate;Programme de mise à jour automatique du fuseau horaire;STOPPED
+UevAgentService;Service User Experience Virtualization;STOPPED
+UmRdpService;Redirecteur de port du mode utilisateur des services Bureau à distance;RUNNING
+upnphost;Hôte de périphérique UPnP;STOPPED
+UserManager;Gestionnaire des utilisateurs;RUNNING
+UsoSvc;Service Orchestrator pour les mises à jour;RUNNING
+VacSvc;Service de composition audio volumétrique;STOPPED
+VaultSvc;Gestionnaire d'informations d'identification;RUNNING
+vds;Disque virtuel;RUNNING
+vmicguestinterface;Interface de services d'invité Hyper-V;STOPPED
+vmicheartbeat;Service Pulsation Microsoft Hyper-V;STOPPED
+vmickvpexchange;Service Échange de données Microsoft Hyper-V;STOPPED
+vmicrdv;Service de virtualisation Bureau à distance Hyper-V;STOPPED
+vmicshutdown;Service Arrêt de l'invité Microsoft Hyper-V;STOPPED
+vmictimesync;Service Synchronisation date/heure Microsoft Hyper-V;STOPPED
+vmicvmsession;Service Hyper-V PowerShell Direct;STOPPED
+vmicvss;Requête du service VSS Microsoft Hyper-V;STOPPED
+VSS;Cliché instantané des volumes;STOPPED
+W32Time;Temps Windows;RUNNING
+WaaSMedicSvc;Service Medic de Windows Update;STOPPED
+WalletService;WalletService;STOPPED
+WAPTService;WAPTService;RUNNING
+WarpJITSvc;WarpJITSvc;STOPPED
+wbengine;Service de moteur de sauvegarde en mode bloc;STOPPED
+WbioSrvc;Service de biométrie Windows;RUNNING
+Wcmsvc;Gestionnaire des connexions Windows;RUNNING
+wcncsvc;Windows Connect Now - Registre de configuration;STOPPED
+WdiServiceHost;Service hôte WDIServiceHost;RUNNING
+WdiSystemHost;Hôte système de diagnostics;RUNNING
+WdNisSvc;Service d'inspection réseau de l'antivirus Microsoft Defender;STOPPED
+WebClient;WebClient;STOPPED
+Wecsvc;Collecteur d'événements de Windows;STOPPED
+WEPHOSTSVC;Service hôte du fournisseur de chiffrement Windows;STOPPED
+wercplsupport;Prise en charge du Panneau de configuration Rapports de problèmes;STOPPED
+WerSvc;Service de rapport d'erreurs Windows;STOPPED
+WFDSConMgrSvc;Service Wi-Fi Direct Service de gestionnaire de connexions;STOPPED
+WiaRpc;Événements d'acquisition d'images fixes;STOPPED
+WinDefend;Service antivirus Microsoft Defender;STOPPED
+WinHttpAutoProxySvc;Service de découverte automatique de Proxy Web pour les services HTTP Windows;RUNNING
+Winmgmt;Infrastructure de gestion Windows;RUNNING
+WinRM;Gestion à distance de Windows (Gestion WSM);STOPPED
+wisvc;Service Windows Insider;STOPPED
+WlanSvc;Service de configuration automatique WLAN;STOPPED
+wlidsvc;Assistant Connexion avec un compte Microsoft;STOPPED
+wlpasvc;Service de l'Assistant de profil local;STOPPED
+WManSvc;Service de gestion de Windows;STOPPED
+wmiApSrv;Carte de performance WMI;STOPPED
+WMIRegistrationService;Intel(R) Management Engine WMI Provider Registration;RUNNING
+WMPNetworkSvc;Service Partage réseau du Lecteur Windows Media;STOPPED
+workfolderssvc;Dossiers de travail;STOPPED
+WpcMonSvc;Contrôle parental;STOPPED
+WPDBusEnum;Service Énumérateur d'appareil mobile;STOPPED
+WpnService;Service du système de notifications Push Windows;RUNNING
+wscsvc;Centre de sécurité;RUNNING
+WSearch;Windows Search;RUNNING
+wuauserv;Windows Update;STOPPED
+WwanSvc;Service de configuration automatique WWAN;STOPPED
+XblAuthManager;Gestionnaire d'authentification Xbox Live;STOPPED
+XblGameSave;Jeu sauvegardé sur Xbox Live;STOPPED
+XboxGipSvc;Xbox Accessory Management Service;STOPPED
+XboxNetApiSvc;Service de mise en réseau Xbox Live;STOPPED
+zdas;TEHTRIS EDR;RUNNING
+ZoomCptService;Zoom Sharing Service;RUNNING
+AarSvc_c6b4b808;Agent Activation Runtime_c6b4b808;STOPPED
+BcastDVRUserService_c6b4b808;Service utilisateur de diffusion et GameDVR_c6b4b808;STOPPED
+BluetoothUserService_c6b4b808;Service de support des utilisateurs du Bluetooth_c6b4b808;STOPPED
+CaptureService_c6b4b808;CaptureService_c6b4b808;STOPPED
+cbdhsvc_c6b4b808;Service utilisateur du Presse-papiers_c6b4b808;RUNNING
+CDPUserSvc_c6b4b808;Service pour utilisateur de plateforme d'appareils connectés_c6b4b808;RUNNING
+ConsentUxUserSvc_c6b4b808;ConsentUX_c6b4b808;STOPPED
+CredentialEnrollmentManagerUserSvc_c6b4b808;CredentialEnrollmentManagerUserSvc_c6b4b808;STOPPED
+DeviceAssociationBrokerSvc_c6b4b808;DeviceAssociationBroker_c6b4b808;STOPPED
+DevicePickerUserSvc_c6b4b808;DevicePicker_c6b4b808;STOPPED
+DevicesFlowUserSvc_c6b4b808;Flux d'appareils_c6b4b808;STOPPED
+MessagingService_c6b4b808;MessagingService_c6b4b808;STOPPED

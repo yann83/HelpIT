@@ -1,0 +1,50 @@
+[18900] LOADER: Executing self as child
+[18900] LOADER: set _MEIPASS2 to C:\Users\yann_\AppData\Local\Temp\_MEI189002
+[18900] LOADER: Setting up to run child
+[18900] LOADER: Creating child process
+[18900] LOADER: Waiting for child process to finish...
+[12188] PyInstaller Bootloader 6.x
+[12188] LOADER: executable is D:\DOCUMENTS\PROGRAMMATION\Python\Projets\HelpIT\distr\HelpIT_DEBUG.exe
+[12188] LOADER: _MEIPASS2 is C:\Users\yann_\AppData\Local\Temp\_MEI189002
+[12188] LOADER: archivename is D:\DOCUMENTS\PROGRAMMATION\Python\Projets\HelpIT\distr\HelpIT_DEBUG.exe
+[12188] LOADER: Cookie found at offset 0xADDD74
+[12188] LOADER: SetDllDirectory(C:\Users\yann_\AppData\Local\Temp\_MEI189002)
+[12188] LOADER: Already in the child - running user's code.
+[12188] LOADER: Python library: C:\Users\yann_\AppData\Local\Temp\_MEI189002\python312.dll
+[12188] LOADER: Loaded functions from Python library.
+[12188] LOADER: Pre-initializing embedded python interpreter...
+[12188] LOADER: Creating PyConfig structure...
+[12188] LOADER: Initializing interpreter configuration...
+[12188] LOADER: Setting program name...
+[12188] LOADER: Setting python home path...
+[12188] LOADER: Setting module search paths...
+[12188] LOADER: Setting sys.argv...
+[12188] LOADER: Applying run-time options...
+[12188] LOADER: Starting embedded python interpreter...
+[12188] LOADER: setting sys._MEIPASS
+[12188] LOADER: importing modules from CArchive
+[12188] LOADER: extracted struct
+[12188] LOADER: running unmarshalled code object for struct...
+[12188] LOADER: extracted pyimod01_archive
+[12188] LOADER: running unmarshalled code object for pyimod01_archive...
+[12188] LOADER: extracted pyimod02_importers
+[12188] LOADER: running unmarshalled code object for pyimod02_importers...
+[12188] LOADER: extracted pyimod03_ctypes
+[12188] LOADER: running unmarshalled code object for pyimod03_ctypes...
+[12188] LOADER: extracted pyimod04_pywin32
+[12188] LOADER: running unmarshalled code object for pyimod04_pywin32...
+[12188] LOADER: Installing PYZ archive with Python modules.
+[12188] LOADER: PYZ archive: PYZ-00.pyz
+[12188] LOADER: Running pyiboot01_bootstrap.py
+[12188] LOADER: Running pyi_rth_inspect.py
+[12188] LOADER: Running pyi_rth__tkinter.py
+[12188] LOADER: Running main.py
+Traceback (most recent call last):
+  File "main.py", line 9, in <module>
+ModuleNotFoundError: No module named 'ping3'
+[12188] Failed to execute script 'main' due to unhandled exception!
+[12188] LOADER: ERROR.
+[12188] LOADER: Manually flushing stdout and stderr
+[12188] LOADER: Cleaning up Python interpreter.
+[18900] LOADER: Back to parent (RC: 1)
+[18900] LOADER: Doing cleanup

@@ -1,0 +1,280 @@
+# Architecture du Module ProcessManager
+
+## Diagramme de Flux
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        main.py (HelpITGUI)                       │
+│                                                                  │
+│  ┌────────────────────────────────────────────────────────┐    │
+│  │  User clicks "Show Processes" button                    │    │
+│  └────────────────────┬───────────────────────────────────┘    │
+│                       │                                          │
+│                       ▼                                          │
+│  ┌────────────────────────────────────────────────────────┐    │
+│  │  show_processes() method                                │    │
+│  │  - Checks if current_ip is set                          │    │
+│  │  - Calls psexec.get_processes_to_csv()                 │    │
+│  │  - Gets CSV path                                        │    │
+│  └────────────────────┬───────────────────────────────────┘    │
+│                       │                                          │
+│                       │ Passes parameters:                       │
+│                       │ • csv_filename                           │
+│                       │ • psexec_manager (self.psexec)          │
+│                       │ • current_ip                             │
+│                       │ • current_hostname                       │
+│                       │ • psexec_path                            │
+│                       │ • log_path                               │
+│                       │                                          │
+└───────────────────────┼──────────────────────────────────────────┘
+                        │
+                        ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                   process.py (ProcessManager)                    │
+│                                                                  │
+│  ┌────────────────────────────────────────────────────────┐    │
+│  │  __init__() - Initialize ProcessManager                 │    │
+│  │  - Store all parameters                                 │    │
+│  │  - Create Toplevel window                               │    │
+│  │  - Call _create_widgets()                               │    │
+│  │  - Call _load_processes()                               │    │
+│  └────────────────────┬───────────────────────────────────┘    │
+│                       │                                          │
+│                       ▼                                          │
+│  ┌────────────────────────────────────────────────────────┐    │
+│  │  _create_widgets() - Build UI                           │    │
+│  │  - Title label                                          │    │
+│  │  - Canvas + Scrollbar (for scrolling)                   │    │
+│  │  - Scrollable frame                                     │    │
+│  │  - Refresh button                                       │    │
+│  │  - Close button                                         │    │
+│  └────────────────────┬───────────────────────────────────┘    │
+│                       │                                          │
+│                       ▼                                          │
+│  ┌────────────────────────────────────────────────────────┐    │
+│  │  _load_processes() - Read CSV and create rows          │    │
+│  │  - Read CSV file                                        │    │
+│  │  - For each process:                                    │    │
+│  │    ┌──────────────────────────────────────────┐        │    │
+│  │    │  Create process_frame                     │        │    │
+│  │    │  ┌──────────────┬──────────────────────┐ │        │    │
+│  │    │  │ Kill Button  │  Process Name Label  │ │        │    │
+│  │    │  │  (GREEN)     │  "firefox.exe"       │ │        │    │
+│  │    │  └──────────────┴──────────────────────┘ │        │    │
+│  │    └──────────────────────────────────────────┘        │    │
+│  │  - Store button in self.process_buttons{}              │    │
+│  └────────────────────────────────────────────────────────┘    │
+│                                                                  │
+│  ┌────────────────────────────────────────────────────────┐    │
+│  │  User clicks "Kill" button                              │    │
+│  └────────────────────┬───────────────────────────────────┘    │
+│                       │                                          │
+│                       ▼                                          │
+│  ┌────────────────────────────────────────────────────────┐    │
+│  │  _kill_process(process_name)                            │    │
+│  │  - Show confirmation dialog                             │    │
+│  │  - Call psexec_manager.kill_process(process_name)      │    │
+│  │  - If result == 1:                                      │    │
+│  │    • Change button color to RED                         │    │
+│  │    • Disable button                                     │    │
+│  │    • Show success message                               │    │
+│  │  - Else:                                                │    │
+│  │    • Show error message                                 │    │
+│  └────────────────────┬───────────────────────────────────┘    │
+│                       │                                          │
+└───────────────────────┼──────────────────────────────────────────┘
+                        │
+                        ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                   psexec.py (PsExecManager)                      │
+│                                                                  │
+│  ┌────────────────────────────────────────────────────────┐    │
+│  │  kill_process(process_name)                             │    │
+│  │  - Add .exe extension if needed                         │    │
+│  │  - Execute: taskkill /IM process.exe /F                │    │
+│  │  - Check output for "SUCCESS"                          │    │
+│  │  - Return 1 if success, 0 if failure                   │    │
+│  └────────────────────────────────────────────────────────┘    │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## Diagramme de Classes
+
+```
+┌──────────────────────────────────────────────────────────┐
+│                    HelpITGUI                              │
+│                    (main.py)                              │
+├──────────────────────────────────────────────────────────┤
+│ Attributes:                                               │
+│  - root: tk.Tk                                            │
+│  - current_ip: str                                        │
+│  - current_hostname: str                                  │
+│  - psexec: PsExecManager                                  │
+│  - psexec_path: str                                       │
+│  - LOG_PATH: Path                                         │
+├──────────────────────────────────────────────────────────┤
+│ Methods:                                                  │
+│  + show_processes()                                       │
+│  + validate_target()                                      │
+│  + open_remote_cmd()                                      │
+│  + ...                                                    │
+└──────────────────┬───────────────────────────────────────┘
+                   │ Creates and uses
+                   │
+                   ▼
+┌──────────────────────────────────────────────────────────┐
+│                  ProcessManager                           │
+│                  (process.py)                             │
+├──────────────────────────────────────────────────────────┤
+│ Attributes:                                               │
+│  - csv_filename: Path                                     │
+│  - psexec_manager: PsExecManager                          │
+│  - current_ip: str                                        │
+│  - current_hostname: str                                  │
+│  - psexec_path: str                                       │
+│  - log_path: str                                          │
+│  - process_buttons: dict                                  │
+│  - window: tk.Toplevel                                    │
+│  - canvas: tk.Canvas                                      │
+│  - scrollable_frame: ttk.Frame                            │
+├──────────────────────────────────────────────────────────┤
+│ Methods:                                                  │
+│  + __init__(...)                                          │
+│  - _create_widgets()                                      │
+│  - _load_processes()                                      │
+│  - _kill_process(process_name)                            │
+│  - _refresh_process_list()                                │
+│  - _on_mousewheel(event)                                  │
+│  + show()                                                 │
+└──────────────────┬───────────────────────────────────────┘
+                   │ Uses
+                   │
+                   ▼
+┌──────────────────────────────────────────────────────────┐
+│                 PsExecManager                             │
+│                 (psexec.py)                               │
+├──────────────────────────────────────────────────────────┤
+│ Attributes:                                               │
+│  - ip_address: str                                        │
+│  - netbios: str                                           │
+│  - psexec_path: str                                       │
+│  - tmp_dir: str                                           │
+├──────────────────────────────────────────────────────────┤
+│ Methods:                                                  │
+│  + get_processes_to_csv()                                 │
+│  + kill_process(process_name) -> int                      │
+│  + get_services_to_csv()                                  │
+│  + open_terminal()                                        │
+│  + ...                                                    │
+└──────────────────────────────────────────────────────────┘
+```
+
+## Flux de Données
+
+```
+┌─────────┐
+│  User   │
+└────┬────┘
+     │ 1. Clicks "Show Processes"
+     ▼
+┌─────────────────────┐
+│  main.py            │
+│  show_processes()   │
+└────┬────────────────┘
+     │ 2. Calls psexec.get_processes_to_csv()
+     ▼
+┌─────────────────────┐
+│  psexec.py          │
+│  get_processes...() │
+└────┬────────────────┘
+     │ 3. Creates CSV file
+     │    /tmp/HOSTNAME_processus.csv
+     ▼
+┌─────────────────────┐
+│  CSV File           │
+│  name               │
+│  firefox            │
+│  chrome             │
+│  ...                │
+└────┬────────────────┘
+     │ 4. Passed to ProcessManager
+     ▼
+┌─────────────────────┐
+│  process.py         │
+│  ProcessManager     │
+└────┬────────────────┘
+     │ 5. Reads CSV and displays
+     ▼
+┌─────────────────────────────────┐
+│  GUI Window                      │
+│  ┌─────────┬──────────────────┐ │
+│  │ [Kill]  │ firefox          │ │
+│  ├─────────┼──────────────────┤ │
+│  │ [Kill]  │ chrome           │ │
+│  ├─────────┼──────────────────┤ │
+│  │ [Kill]  │ notepad          │ │
+│  └─────────┴──────────────────┘ │
+└─────────────────────────────────┘
+     │ 6. User clicks [Kill]
+     ▼
+┌─────────────────────┐
+│  process.py         │
+│  _kill_process()    │
+└────┬────────────────┘
+     │ 7. Calls psexec_manager.kill_process()
+     ▼
+┌─────────────────────┐
+│  psexec.py          │
+│  kill_process()     │
+└────┬────────────────┘
+     │ 8. Executes: PsExec \\IP taskkill /IM firefox.exe /F
+     ▼
+┌─────────────────────┐
+│  Remote Machine     │
+│  Kills firefox.exe  │
+└────┬────────────────┘
+     │ 9. Returns success (1) or failure (0)
+     ▼
+┌─────────────────────┐
+│  process.py         │
+│  Updates button     │
+│  GREEN → RED        │
+│  ENABLED → DISABLED │
+└─────────────────────┘
+```
+
+## Structure des Fichiers
+
+```
+HelpIT/
+├── main.py                    # Application principale
+├── process.py                 # Module ProcessManager (NOUVEAU)
+├── psexec.py                  # Gestion PsExec
+├── credential.py              # Gestion des credentials
+├── config.json                # Configuration
+├── bin/
+│   └── PsExec64.exe          # Outil SysInternals
+└── tmp/                       # Logs et CSV temporaires
+    ├── HOSTNAME_processus.csv
+    ├── HOSTNAME_services.csv
+    └── session_*.log
+```
+
+## Légende
+
+```
+┌────┐
+│    │  = Classe / Module / Composant
+└────┘
+
+   │
+   ▼    = Flux de contrôle / Appel de méthode
+
+   →    = Passage de données
+
+[Button] = Élément d'interface
+
+GREEN    = État initial (actif)
+RED      = État après succès (inactif)
+```
