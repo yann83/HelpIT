@@ -3,6 +3,7 @@ from tkinter import ttk, messagebox
 import csv
 import logging
 from pathlib import Path
+from constants import *
 
 
 class ServiceManager:
@@ -38,17 +39,17 @@ class ServiceManager:
         self.state_colors = {
             'RUNNING': '#4CAF50',      # Green
             'STOPPED': '#F44336',      # Red
-            'START_PENDING': '#FF9800', # Orange
-            'STOP_PENDING': '#FF9800',  # Orange
-            'CONTINUE_PENDING': '#FF9800', # Orange
-            'PAUSE_PENDING': '#FF9800', # Orange
-            'PAUSED': '#FFC107'        # Amber
+            'START_PENDING': COLOR_WARNING, # Orange
+            'STOP_PENDING': COLOR_WARNING,  # Orange
+            'CONTINUE_PENDING': COLOR_WARNING, # Orange
+            'PAUSE_PENDING': COLOR_WARNING, # Orange
+            'PAUSED': COLOR_PAUSED        # Amber
         }
 
         # Create the main window
         self.window = tk.Toplevel()
         self.window.title(f"Service Manager - {self.current_hostname} ({self.current_ip})")
-        self.window.geometry("750x600")
+        self.window.geometry(SERVICE_MANAGER_SIZE)
 
         # Keep window on top of the main window
         self.window.attributes('-topmost', True)
@@ -206,7 +207,7 @@ class ServiceManager:
                     stop_btn = tk.Button(
                         service_frame,
                         text="Stop",
-                        bg="#F44336",  # Red color
+                        bg=COLOR_ERROR,  # Red color
                         fg="white",
                         width=6,
                         command=lambda sid=service_id: self._stop_service(sid)
@@ -217,7 +218,7 @@ class ServiceManager:
                     run_btn = tk.Button(
                         service_frame,
                         text="Run",
-                        bg="#4CAF50",  # Green color
+                        bg=COLOR_SUCCESS,  # Green color
                         fg="white",
                         width=6,
                         command=lambda sid=service_id: self._start_service(sid)
@@ -228,7 +229,7 @@ class ServiceManager:
                     restart_btn = tk.Button(
                         service_frame,
                         text="Restart",
-                        bg="#2196F3",  # Blue color
+                        bg=COLOR_INFO,  # Blue color
                         fg="white",
                         width=7,
                         command=lambda sid=service_id: self._restart_service(sid)

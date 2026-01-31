@@ -18,19 +18,11 @@ from psexec import PsExecManager
 from process import ProcessManager
 from service import ServiceManager
 from wolmanager import WolManager
+from utils import is_compiled, debug_print
 from explorer import DualFileExplorer
+from script_manager import ScriptManager
+from constants import *
 
-
-# Begin --- Display print function when not compiled
-def is_compiled():
-    """Detects if the application is compiled with PyInstaller"""
-    return getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS')
-
-def debug_print(*args, **kwargs):
-    """Print only if the application is not compiled"""
-    if not is_compiled():
-        print(*args, **kwargs)
-# End --- Display print function when not compiled
 
 # Get local paths , needed for compilation use
 def get_application_path():
@@ -47,6 +39,7 @@ CONFIG_JSON = SCRIPT_DIR / "config.json"
 LOG_PATH = SCRIPT_DIR / "tmp"
 MAIN_LOG = SCRIPT_DIR / "HelpIT.log"
 BIN_PATH = SCRIPT_DIR / "bin"
+SCRIPTS_PATH = SCRIPT_DIR / "scripts"
 
 # Creating the necessary folders
 BIN_PATH.mkdir(exist_ok=True)
@@ -104,7 +97,7 @@ class HelpITGUI:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("HelpIT")
-        self.root.geometry("440x255")
+        self.root.geometry(MAIN_WINDOW_SIZE)
 
         # Component Initialization
         self.config = configparser.ConfigParser()
@@ -122,11 +115,13 @@ class HelpITGUI:
 
         # PsExecManager instance (will be initialized upon target validation)
         self.psexec = None
-        self.psexec_path = str(BIN_PATH / "PsExec64.exe")
+        #self.psexec_path = str(BIN_PATH / "PsExec64.exe")
+        self.psexec_path = str(BIN_PATH)
 
         # References to open manager windows (Process and Service managers)
         self.process_manager = None
         self.service_manager = None
+        self.open_explorer = None
         self.open_explorer = None
 
         # Loading config
@@ -153,6 +148,33 @@ class HelpITGUI:
         with open(file_path, "w") as file:
             json.dump(default_config, file, indent=4)
 
+    def _validate_config(self) -> bool:
+        """
+        Validate configuration values.
+
+        Returns:
+            True if configuration is valid, False otherwise.
+        """
+        errors = []
+
+        # Validate ping_threshold
+        if not isinstance(self.ping_threshold, (int, float)):
+            errors.append("ping_threshold must be a number")
+        elif self.ping_threshold <= 0:
+            errors.append("ping_threshold must be positive")
+
+        # Validate default_path
+        if not self.default_local_path:
+            errors.append("default_path cannot be empty")
+        elif not Path(self.default_local_path).exists():
+            logging.warning(f"default_path does not exist: {self.default_local_path}")
+
+        if errors:
+            for error in errors:
+                logging.error(f"Configuration error: {error}")
+            return False
+
+        return True
 
     def _load_config(self):
         """Load config"""
@@ -174,8 +196,12 @@ class HelpITGUI:
             messagebox.showerror("ERROR",  "Config file missing.")
             sys.exit(1)
 
-        self.ping_threshold = self.data["ping_threshold"]
-        self.default_local_path = self.data["default_path"]
+        self.ping_threshold = self.data.get("ping_threshold", 78)
+        self.default_local_path = self.data.get("default_path", "C:\\temp")
+
+        if not self._validate_config():
+            messagebox.showerror("ERROR", "Invalid configuration. Check logs.")
+            sys.exit(1)
 
         if not Path(self.psexec_path).exists():
             messagebox.showerror("ERROR", "PsExec64 missing.")
@@ -288,12 +314,14 @@ class HelpITGUI:
                                                                                    sticky=tk.W + tk.E)
         ttk.Button(action_frame, text="WOL", command=self.wake_on_lan).grid(row=3, column=0, pady=2, padx=2,
                                                                             sticky=tk.W + tk.E)
+        ttk.Button(action_frame, text="Scripts", command=self.remote_script).grid(row=4, column=0, pady=2, padx=2,
+                                                                            sticky=tk.W + tk.E)
         # Column 2 (buttons)
         ttk.Button(action_frame, text="Assist", command=self.remote_assistance).grid(row=0, column=1, pady=2,
                                                                                          padx=2, sticky=tk.W + tk.E)
         ttk.Button(action_frame, text="RDP", command=self.remote_desktop).grid(row=1, column=1, pady=2, padx=2,
                                                                                   sticky=tk.W + tk.E)
-        ttk.Button(action_frame, text="Drive C", command=lambda: self.open_drive('C')).grid(row=2, column=1, pady=2,
+        ttk.Button(action_frame, text="Drive C", command=lambda: self.open_drive).grid(row=2, column=1, pady=2,
                                                                                            padx=2, sticky=tk.W + tk.E)
         ttk.Button(action_frame, text="CMD", command=self.open_remote_cmd).grid(row=3, column=1, pady=2, padx=2,
                                                                             sticky=tk.W + tk.E)
@@ -370,6 +398,16 @@ class HelpITGUI:
                 self.service_manager = None
 
 
+        # Close ScriptManager window if it exists
+        if self.script_manager:
+            try:
+                self.script_manager.close()
+                logging.info("ScriptManager window closed due to new target validation")
+            except Exception as e:
+                logging.error(f"Error closing ScriptManager window: {e}")
+            finally:
+                self.script_manager = None
+
     def validate_target(self):
         # Close any open manager windows when validating a new targetp
         self._close_manager_windows()
@@ -405,7 +443,7 @@ class HelpITGUI:
 
         # Test ping
         try:
-            ping_time = ping3.ping(target, timeout=2)
+            ping_time = ping3.ping(target, DEFAULT_PING_TIMEOUT)
             if ping_time is None or ping_time is False or ping_time <= 0:
                 self.label_ping.config(text="No ping", foreground='red')
                 logging.warning(f"Error no response for {target}")
@@ -455,7 +493,7 @@ class HelpITGUI:
 
             if mac_address:
                 # Initialize WolManager and store the MAC address
-                wol_manager = WolManager("config.sqlite")
+                wol_manager = WolManager(DEFAULT_DB_NAME)
                 row_id = wol_manager.update_mac_address(mac_address, self.current_hostname)
                 logging.info(
                     f"MAC address stored in database: {mac_address} for {self.current_hostname} (ID: {row_id})")
@@ -609,7 +647,21 @@ class HelpITGUI:
             logging.error(f"Error remote desktop : {e}")
             messagebox.showerror("Error", "Remote desktop issue.")
 
-    def open_drive(self, drive_letter):
+    def open_drive(self):
+        """
+        Open the dual file explorer for a specific drive.
+
+        Args:
+            drive: Drive letter to open (default: 'C').
+        """
+        if not self.current_ip:
+            messagebox.showwarning("Warning", "Select a valid target first.")
+            return
+
+        self.open_explorer = DualFileExplorer(
+            left_dir=self.default_local_path,
+            ip=self.current_ip
+        )
         if not self.current_ip:
             messagebox.showwarning("Warning", "Select a valid target first.")
             return
@@ -688,6 +740,42 @@ class HelpITGUI:
         except Exception as e:
             logging.error(f"Error opening terminal: {e}")
             messagebox.showerror("Error", "Couldn't open terminal")
+
+    def remote_script(self):
+        """
+        Open the Script Manager window to browse and execute scripts.
+
+        This method displays a GUI window listing all available scripts
+        from the SCRIPTS_PATH directory and allows the user to execute
+        them on the currently selected remote machine.
+        """
+        # Check if a target has been validated
+        if not self.current_ip:
+            messagebox.showwarning("Warning", "Select a valid target first.")
+            return
+
+        # Check if PsExec manager is initialized
+        if not self.psexec:
+            messagebox.showwarning("Warning", "PsExec not initialized. Validate a target first.")
+            return
+
+        try:
+            # Create the scripts directory if it doesn't exist
+            SCRIPTS_PATH.mkdir(exist_ok=True)
+
+            # Create and show the ScriptManager window
+            self.script_manager = ScriptManager(
+                scripts_path=SCRIPTS_PATH,
+                psexec_manager=self.psexec,
+                current_ip=self.current_ip,
+                current_hostname=self.current_hostname
+            )
+
+            logging.info(f"ScriptManager opened for {self.current_hostname}")
+
+        except Exception as e:
+            logging.error(f"Error opening Script Manager: {e}")
+            messagebox.showerror("Error", f"Could not open Script Manager: {e}")
 
     def open_logs(self):
         """Open log folder"""

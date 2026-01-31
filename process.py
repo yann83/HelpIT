@@ -3,6 +3,7 @@ from tkinter import ttk, messagebox
 import csv
 import logging
 from pathlib import Path
+from constants import *
 
 
 class ProcessManager:
@@ -11,7 +12,7 @@ class ProcessManager:
     Allows killing processes on a remote machine using PsExec
     """
 
-    def __init__(self, csv_filename, psexec_manager, current_ip, current_hostname, psexec_path, log_path):
+    def __init__(self,csv_filename: Path,psexec_manager: 'PsExecManager',current_ip: str,current_hostname: str,psexec_path: str,log_path: str) -> None:
         """
         Initialize the ProcessManager
 
@@ -37,7 +38,7 @@ class ProcessManager:
         # Create the main window
         self.window = tk.Toplevel()
         self.window.title(f"Process Manager - {self.current_hostname} ({self.current_ip})")
-        self.window.geometry("600x500")
+        self.window.geometry(PROCESS_MANAGER_SIZE)
 
         # Keep window on top of the main window
         self.window.attributes('-topmost', True)
@@ -48,7 +49,7 @@ class ProcessManager:
         # Load processes from CSV
         self._load_processes()
 
-    def _create_widgets(self):
+    def _create_widgets(self) -> None:
         """
         Create all GUI widgets for the process manager window
         """
@@ -159,7 +160,7 @@ class ProcessManager:
                     kill_btn = tk.Button(
                         process_frame,
                         text="Kill",
-                        bg="#4CAF50",  # Green color
+                        bg=COLOR_SUCCESS,  # Green color
                         fg="white",
                         width=8,
                         command=lambda pname=process_name: self._kill_process(pname)
@@ -185,7 +186,7 @@ class ProcessManager:
             messagebox.showerror("Error", f"Error reading CSV file: {e}")
             logging.error(f"Error reading CSV file {self.csv_filename}: {e}")
 
-    def _kill_process(self, process_name):
+    def _kill_process(self, process_name: str) -> None:
         """
         Kill a process on the remote machine
 
@@ -211,7 +212,7 @@ class ProcessManager:
             if result == 1:
                 # Success: change button to red and disable it
                 if button:
-                    button.config(bg="#F44336", state="disabled")  # Red color
+                    button.config(bg=COLOR_ERROR, state="disabled")  # Red color
 
                 # messagebox.showinfo("Success", f"Process '{process_name}' killed successfully!")
                 logging.info(f"Process '{process_name}' killed on {self.current_hostname}")

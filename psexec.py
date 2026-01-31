@@ -2,22 +2,13 @@ import subprocess
 import re
 import csv
 import sys
+import locale
+import shutil
 from pathlib import Path
+from utils import is_compiled, debug_print
+from constants import *
 
 
-# Begin --- Display print function when not compiled
-def is_compiled():
-    """Detects if the application is compiled with PyInstaller"""
-    return getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS')
-
-
-def debug_print(*args, **kwargs):
-    """Print only if the application is not compiled"""
-    if not is_compiled():
-        print(*args, **kwargs)
-
-
-# End --- Display print function when not compiled
 
 
 class PsExecManager:
@@ -94,7 +85,7 @@ class PsExecManager:
 
         return startupinfo, creationflags
 
-    def _execute_command(self, ps_exe, command_args, timeout=30):
+    def _execute_command(self, ps_exe, command_args, timeout=DEFAULT_PSEXEC_TIMEOUT):
         """
         Executes a PsExec command with hidden console window
 
@@ -110,12 +101,17 @@ class PsExecManager:
         try:
             # Get flags to hide console window
             startupinfo, creationflags = self._get_subprocess_flags(hide_window=True)
+            # Get system default encoding, fallback to cp850 for Windows command prompt
+            try:
+                system_encoding = locale.getpreferredencoding(False)
+            except Exception:
+                system_encoding = 'cp850'
 
             result = subprocess.run(
                 full_command,
                 capture_output=True,
                 text=True,
-                encoding='cp850',
+                encoding=system_encoding,
                 errors='ignore',
                 timeout=timeout,
                 startupinfo=startupinfo,
@@ -478,17 +474,99 @@ class PsExecManager:
 
         return False
 
-    def run_script(self, script_file):
-        #powershell.exe -ExecutionPolicy Bypass -NoProfile -File "%DOSSIER_DISTANT%\%SCRIPT_NAME%"
-        script_path = f"C:\\windows\\temp\\{script_file}"
-        command_args = ["powershell.exe", "-ExecutionPolicy", "Bypass","-NoProfile","-File",  f'"{script_path}"']
+    def run_script(self, script_file: Path, timeout: int = DEFAULT_SCRIPT_TIMEOUT):
+        """
+        Copies a script from the local machine to the remote machine and executes it.
 
-        result = self._execute_command(self.psexec, command_args, timeout=60)
+        The function automatically detects the script type based on its extension:
+        - .ps1 files are executed with PowerShell
+        - .bat and .cmd files are executed with cmd.exe
 
-        if result and result.returncode == 0:
-            return True
+        Args:
+            script_file (Path): Path to the local script file to execute.
+            timeout (int): Timeout in seconds for script execution. Defaults to 120.
 
-        return False
+        Returns:
+            bool: True if the script was copied and executed successfully, False otherwise.
+
+        Raises:
+            FileNotFoundError: If the local script file does not exist.
+            ValueError: If the script file has an unsupported extension.
+
+        Example:
+            #>>> psexec = PsExecManager("192.168.1.100", "PC-001", "bin", "tmp")
+            #>>> result = psexec.run_script(Path("scripts/cleanup.ps1"))
+            #>>> print("Success" if result else "Failed")
+        """
+        # Convert to Path object if string is provided
+        script_file = Path(script_file)
+
+        # Check if the source file exists
+        if not script_file.exists():
+            debug_print(f"Script file not found: {script_file}")
+            raise FileNotFoundError(f"Script file not found: {script_file}")
+
+        # Get the file extension (lowercase for comparison)
+        file_extension = script_file.suffix.lower()
+
+        # Validate supported extensions
+        supported_extensions = ['.ps1', '.bat', '.cmd']
+        if file_extension not in supported_extensions:
+            debug_print(f"Unsupported script extension: {file_extension}")
+            raise ValueError(
+                f"Unsupported script extension: {file_extension}. "
+                f"Supported extensions: {', '.join(supported_extensions)}"
+            )
+
+        # Define the remote destination path
+        remote_share_path = f"\\\\{self.ip_address}\\c$\\windows\\temp\\"
+        remote_execution_path = f"C:\\windows\\temp\\{script_file.name}"
+
+        # Copy the script to the remote machine
+        try:
+            shutil.copy2(script_file, remote_share_path)
+            debug_print(f"Script copied to: {remote_share_path}{script_file.name}")
+        except Exception as e:
+            debug_print(f"Failed to copy script to remote machine: {e}")
+            return False
+
+        # Build the command based on file extension
+        if file_extension == '.ps1':
+            # PowerShell script execution
+            command_args = [
+                "powershell.exe",
+                "-ExecutionPolicy", "Bypass",
+                "-NoProfile",
+                "-File", remote_execution_path
+            ]
+        elif file_extension in ['.bat', '.cmd']:
+            # Batch script execution with cmd.exe
+            command_args = [
+                "cmd.exe",
+                "/c", remote_execution_path
+            ]
+
+        debug_print(f"Executing script with command: {command_args}")
+
+        remote_file_path = f"{remote_share_path}{script_file.name}"
+
+        try:
+            result = self._execute_command(self.psexec, command_args, timeout=timeout)
+
+            if result and result.returncode == 0:
+                return True
+            return False
+
+        finally:
+            # Clean up: remove the script from remote machine
+            try:
+                remote_file = Path(remote_file_path)
+                if remote_file.exists():
+                    remote_file.unlink()
+                    debug_print(f"Cleaned up remote script: {remote_file_path}")
+            except Exception as cleanup_error:
+                debug_print(f"Warning: Could not clean up remote script: {cleanup_error}")
+
 
 
 if __name__ == "__main__":

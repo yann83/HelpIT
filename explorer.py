@@ -19,6 +19,7 @@ import shutil
 from pathlib import Path
 import threading
 from datetime import datetime
+from constants import *
 
 
 class ProgressWindow:
@@ -48,7 +49,7 @@ class ProgressWindow:
         self.parent = parent
         self.window = tk.Toplevel(parent)
         self.window.title(title)
-        self.window.geometry("450x180")
+        self.window.geometry(PROGRESS_WINDOW_SIZE)
         self.window.resizable(False, False)
         self.window.transient(parent)
         self.window.grab_set()
@@ -175,7 +176,7 @@ class DualFileExplorer:
     """
 
     # Buffer size for file copy operations (64 KB)
-    COPY_BUFFER_SIZE = 64 * 1024
+    COPY_BUFFER_SIZE = COPY_BUFFER_SIZE
 
     def __init__(self, left_dir, ip):
         """
@@ -186,7 +187,7 @@ class DualFileExplorer:
         """
         self.root = tk.Toplevel()
         self.root.title("File Manager - Dual Pane")
-        self.root.geometry("1200x700")
+        self.root.geometry(FILE_EXPLORER_SIZE)
 
         # Initial paths
         self.left_path = left_dir
@@ -904,9 +905,16 @@ class DualFileExplorer:
 
 
 def main():
-    """Application entry point."""
+    """Application entry point for standalone testing."""
+    # Create hidden root window (DualFileExplorer creates its own Toplevel)
     root = tk.Tk()
-    app = DualFileExplorer(root)
+    root.withdraw()  # Hide the root window
+
+    # Default paths for testing
+    default_left_dir = "C:\\temp"
+    default_ip = "127.0.0.1"
+
+    app = DualFileExplorer(left_dir=default_left_dir, ip=default_ip)
     root.mainloop()
 
 

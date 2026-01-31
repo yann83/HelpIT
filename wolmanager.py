@@ -1,7 +1,9 @@
 import sqlite3
+import re
 from datetime import datetime, timedelta
 from typing import List, Optional
 from pathlib import Path
+from constants import *
 
 
 class WolManager:
@@ -59,6 +61,20 @@ class WolManager:
         except sqlite3.Error as e:
             raise Exception(f"Error reading MAC addresses: {e}")
 
+    def _validate_mac_address(self, mac: str) -> bool:
+        """
+        Validate MAC address format.
+
+        Args:
+            mac: MAC address string to validate.
+
+        Returns:
+            True if valid, False otherwise.
+        """
+        # Accept formats: XX-XX-XX-XX-XX-XX or XX:XX:XX:XX:XX:XX
+        pattern = r'^([0-9A-Fa-f]{2}[-:]){5}[0-9A-Fa-f]{2}$'
+        return bool(re.match(pattern, mac))
+
     def update_mac_address(self, mac: str, name: str) -> int:
         """
         Inserts a new entry with the provided MAC address and name.
@@ -71,7 +87,14 @@ class WolManager:
 
         Returns:
         The ID of the inserted entry
+
+        Raises:
+        ValueError: If MAC address format is invalid.
         """
+        # Validate MAC address format
+        if not self._validate_mac_address(mac):
+            raise ValueError(f"Invalid MAC address format: {mac}")
+
         try:
             current_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -170,4 +193,4 @@ if __name__ == "__main__":
 
     # Cleaning up old data (> 30 days)
     print("\nNettoyage des données de plus de 30 jours...")
-    deleted_count = wol_manager.clean_base(30)
+    deleted_count = wol_manager.clean_base(MAC_RETENTION_DAYS)
