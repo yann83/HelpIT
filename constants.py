@@ -1,6 +1,7 @@
 # constants.py
 """
 Application-wide constants for HelpIT.
+
 """
 
 # Window dimensions

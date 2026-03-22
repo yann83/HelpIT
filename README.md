@@ -74,15 +74,25 @@ Required executables (place in `bin/` folder):
 
 ## Installation
 
-1. Download PsTools and extract the required executable to the `bin/` folder.
+1. Run setup or extract in a folder of your choice
 
-2. Create the configuration file `config.json`:
+2. Download PsTools and extract the required executable to the `bin/` folder.
+
+3. Create the configuration file `config.json`:
 ```json
 {
     "default_path": "C:\\temp",
     "ping_threshold": 75
 }
 ```
+
+For silent install use :
+
+> HelpIT-x.x.x-Setup.exe /VERYSILENT /SUPPRESSMSGBOXES /TASKS="psexecversion"
+
+or
+
+> HelpIT-x.x.x-Setup.exe /VERYSILENT /SUPPRESSMSGBOXES /TASKS="winrmversion"
 
 ## Usage
 

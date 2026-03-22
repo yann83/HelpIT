@@ -212,3 +212,6 @@ compile_with_spec_psexec.bat
 compile_with_spec_winrm.bat
 dist_add/config.json
 HelpIT.iss
+dist_add/scripts/add scripts here.txt
+scripts/add scripts here.txt
+setup/HelpIT-1.0.0-Setup.exe
