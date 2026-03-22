@@ -1,6 +1,5 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[cod]
 *$py.class
 
 # C extensions
@@ -46,7 +45,6 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
-*.py,cover
 .hypothesis/
 .pytest_cache/
 cover/
@@ -210,3 +208,7 @@ test_process.py
 test_psexec.py
 test_services.py
 ToDo.md
+compile_with_spec_psexec.bat
+compile_with_spec_winrm.bat
+dist_add/config.json
+HelpIT.iss

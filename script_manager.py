@@ -222,7 +222,7 @@ class ScriptManager:
         except Exception as e:
             logging.error(f"Error loading scripts: {e}")
             self.status_var.set(f"Error loading scripts")
-            messagebox.showerror("Error", f"Failed to load scripts: {e}")
+            messagebox.showerror("Error", f"Failed to load scripts: {e}", parent=self.window)
 
     def _on_selection_change(self, event=None):
         """
@@ -260,7 +260,7 @@ class ScriptManager:
         selection = self.script_listbox.curselection()
 
         if not selection:
-            messagebox.showwarning("Warning", "Please select a script to launch.")
+            messagebox.showwarning("Warning", "Please select a script to launch.", parent=self.window)
             return
 
         # Get the selected script index
@@ -274,7 +274,8 @@ class ScriptManager:
             "Confirm Execution",
             f"Are you sure you want to execute:\n\n"
             f"{script_file.name}\n\n"
-            f"on {self.current_hostname} ({self.current_ip})?"
+            f"on {self.current_hostname} ({self.current_ip})?",
+            parent=self.window
         )
 
         if not confirm:
@@ -294,7 +295,8 @@ class ScriptManager:
                 self.status_var.set(f"Script executed successfully")
                 messagebox.showinfo(
                     "Success",
-                    f"Script '{script_file.name}' executed successfully on {self.current_hostname}."
+                    f"Script '{script_file.name}' executed successfully on {self.current_hostname}.",
+                    parent=self.window
                 )
                 logging.info(f"Script {script_file.name} executed on {self.current_hostname}")
             else:
@@ -302,23 +304,24 @@ class ScriptManager:
                 self.status_var.set(f"Script execution failed")
                 messagebox.showerror(
                     "Error",
-                    f"Failed to execute script '{script_file.name}' on {self.current_hostname}."
+                    f"Failed to execute script '{script_file.name}' on {self.current_hostname}.",
+                    parent=self.window
                 )
                 logging.error(f"Failed to execute {script_file.name} on {self.current_hostname}")
 
         except FileNotFoundError as e:
             self.status_var.set("Script file not found")
-            messagebox.showerror("Error", f"Script file not found: {e}")
+            messagebox.showerror("Error", f"Script file not found: {e}", parent=self.window)
             logging.error(f"Script file not found: {e}")
 
         except ValueError as e:
             self.status_var.set("Unsupported script type")
-            messagebox.showerror("Error", f"Unsupported script type: {e}")
+            messagebox.showerror("Error", f"Unsupported script type: {e}", parent=self.window)
             logging.error(f"Unsupported script type: {e}")
 
         except Exception as e:
             self.status_var.set("Error during execution")
-            messagebox.showerror("Error", f"Error executing script: {e}")
+            messagebox.showerror("Error", f"Error executing script: {e}", parent=self.window)
             logging.error(f"Error executing script {script_file.name}: {e}")
 
         finally:

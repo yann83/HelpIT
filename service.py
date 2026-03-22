@@ -135,7 +135,7 @@ class ServiceManager:
         """
         # Check if CSV file exists
         if not self.csv_filename.exists():
-            messagebox.showerror("Error", f"CSV file not found: {self.csv_filename}")
+            messagebox.showerror("Error", f"CSV file not found: {self.csv_filename}", parent=self.window)
             logging.error(f"CSV file not found: {self.csv_filename}")
             return
 
@@ -249,7 +249,7 @@ class ServiceManager:
                 logging.info(f"Loaded {row_index} services from {self.csv_filename}")
 
         except Exception as e:
-            messagebox.showerror("Error", f"Error reading CSV file: {e}")
+            messagebox.showerror("Error", f"Error reading CSV file: {e}", parent=self.window)
             logging.error(f"Error reading CSV file {self.csv_filename}: {e}")
 
     def _update_service_status(self, service_id):
@@ -293,7 +293,8 @@ class ServiceManager:
         # Confirm action with user
         response = messagebox.askyesno(
             "Confirm",
-            f"Are you sure you want to stop service '{service_id}'?"
+            f"Are you sure you want to stop service '{service_id}'?",
+            parent=self.window
         )
 
         if not response:
@@ -306,18 +307,19 @@ class ServiceManager:
             if result:
                 # Success: update the status
                 self._update_service_status(service_id)
-                messagebox.showinfo("Success", f"Service '{service_id}' stopped successfully!")
+                messagebox.showinfo("Success", f"Service '{service_id}' stopped successfully!", parent=self.window)
                 logging.info(f"Service '{service_id}' stopped on {self.current_hostname}")
             else:
                 # Failure: show error message
                 messagebox.showerror(
                     "Error",
-                    f"Failed to stop service '{service_id}'"
+                    f"Failed to stop service '{service_id}'",
+                    parent=self.window
                 )
                 logging.error(f"Failed to stop service '{service_id}' on {self.current_hostname}")
 
         except Exception as e:
-            messagebox.showerror("Error", f"Error stopping service: {e}")
+            messagebox.showerror("Error", f"Error stopping service: {e}", parent=self.window)
             logging.error(f"Error stopping service '{service_id}': {e}")
 
     def _start_service(self, service_id):
@@ -330,7 +332,8 @@ class ServiceManager:
         # Confirm action with user
         response = messagebox.askyesno(
             "Confirm",
-            f"Are you sure you want to start service '{service_id}'?"
+            f"Are you sure you want to start service '{service_id}'?",
+            parent=self.window
         )
 
         if not response:
@@ -343,18 +346,19 @@ class ServiceManager:
             if result:
                 # Success: update the status
                 self._update_service_status(service_id)
-                messagebox.showinfo("Success", f"Service '{service_id}' started successfully!")
+                messagebox.showinfo("Success", f"Service '{service_id}' started successfully!", parent=self.window)
                 logging.info(f"Service '{service_id}' started on {self.current_hostname}")
             else:
                 # Failure: show error message
                 messagebox.showerror(
                     "Error",
-                    f"Failed to start service '{service_id}'"
+                    f"Failed to start service '{service_id}'",
+                    parent=self.window
                 )
                 logging.error(f"Failed to start service '{service_id}' on {self.current_hostname}")
 
         except Exception as e:
-            messagebox.showerror("Error", f"Error starting service: {e}")
+            messagebox.showerror("Error", f"Error starting service: {e}", parent=self.window)
             logging.error(f"Error starting service '{service_id}': {e}")
 
     def _restart_service(self, service_id):
@@ -367,7 +371,8 @@ class ServiceManager:
         # Confirm action with user
         response = messagebox.askyesno(
             "Confirm",
-            f"Are you sure you want to restart service '{service_id}'?"
+            f"Are you sure you want to restart service '{service_id}'?",
+            parent=self.window
         )
 
         if not response:
@@ -380,18 +385,19 @@ class ServiceManager:
             if result:
                 # Success: update the status
                 self._update_service_status(service_id)
-                messagebox.showinfo("Success", f"Service '{service_id}' restarted successfully!")
+                messagebox.showinfo("Success", f"Service '{service_id}' restarted successfully!", parent=self.window)
                 logging.info(f"Service '{service_id}' restarted on {self.current_hostname}")
             else:
                 # Failure: show error message
                 messagebox.showerror(
                     "Error",
-                    f"Failed to restart service '{service_id}'"
+                    f"Failed to restart service '{service_id}'",
+                    parent=self.window
                 )
                 logging.error(f"Failed to restart service '{service_id}' on {self.current_hostname}")
 
         except Exception as e:
-            messagebox.showerror("Error", f"Error restarting service: {e}")
+            messagebox.showerror("Error", f"Error restarting service: {e}", parent=self.window)
             logging.error(f"Error restarting service '{service_id}': {e}")
 
     def _refresh_service_list(self):
@@ -412,11 +418,11 @@ class ServiceManager:
             # Reload services from the updated CSV
             self._load_services()
 
-            messagebox.showinfo("Success", "Service list refreshed successfully!")
+            messagebox.showinfo("Success", "Service list refreshed successfully!", parent=self.window)
             logging.info(f"Service list refreshed for {self.current_hostname}")
 
         except Exception as e:
-            messagebox.showerror("Error", f"Error refreshing service list: {e}")
+            messagebox.showerror("Error", f"Error refreshing service list: {e}", parent=self.window)
             logging.error(f"Error refreshing service list for {self.current_hostname}: {e}")
 
     def show(self):

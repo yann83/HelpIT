@@ -75,23 +75,25 @@ class WolManager:
         pattern = r'^([0-9A-Fa-f]{2}[-:]){5}[0-9A-Fa-f]{2}$'
         return bool(re.match(pattern, mac))
 
+
     def update_mac_address(self, mac: str, name: str) -> int:
         """
-        Inserts a new entry with the provided MAC address and name.
+        Inserts or updates an entry for the given MAC address.
 
-        The date and time are automatically set to the current time.
+        If the MAC address already exists in the database, its associated
+        name and datetime are updated. Otherwise, a new row is inserted.
+        This prevents duplicate entries for the same physical machine.
 
         Args:
-        mac: The MAC address to insert
-        name: The name associated with the MAC address
+            mac: The MAC address to insert or update.
+            name: The hostname associated with the MAC address.
 
         Returns:
-        The ID of the inserted entry
+            The ID of the inserted or updated row.
 
         Raises:
-        ValueError: If MAC address format is invalid.
+            ValueError: If MAC address format is invalid.
         """
-        # Validate MAC address format
         if not self._validate_mac_address(mac):
             raise ValueError(f"Invalid MAC address format: {mac}")
 
@@ -100,14 +102,36 @@ class WolManager:
 
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
+
+                # Check if this MAC address already exists
                 cursor.execute(
-                    "INSERT INTO mac_list (mac_address, name, datetime) VALUES (?, ?, ?)",
-                    (mac, name, current_datetime)
+                    "SELECT id FROM mac_list WHERE mac_address = ?",
+                    (mac,)
                 )
-                conn.commit()
-                return cursor.lastrowid
+                existing = cursor.fetchone()
+
+                if existing:
+                    # MAC already known: update name and timestamp
+                    cursor.execute(
+                        "UPDATE mac_list SET name = ?, datetime = ? WHERE mac_address = ?",
+                        (name, current_datetime, mac)
+                    )
+                    conn.commit()
+                    row_id = existing[0]
+                else:
+                    # New MAC address: insert a new row
+                    cursor.execute(
+                        "INSERT INTO mac_list (mac_address, name, datetime) VALUES (?, ?, ?)",
+                        (mac, name, current_datetime)
+                    )
+                    conn.commit()
+                    row_id = cursor.lastrowid
+
+                return row_id
+
         except sqlite3.Error as e:
-            raise Exception(f"Error inserting MAC address: {e}")
+            raise Exception(f"Error upserting MAC address: {e}")
+
 
     def clean_base(self, days: int) -> int:
         """
@@ -174,14 +198,14 @@ if __name__ == "__main__":
 
     # Insert datas
     print("Inserting new MAC addresses...")
-    id1 = wol_manager.update_mac_address("6C-02-E0-00-8D-39", "P123456-0AZ-032")
-    id2 = wol_manager.update_mac_address("AA-BB-CC-DD-EE-FF", "P123456-0AZ-032")
-    id3 = wol_manager.update_mac_address("11-22-33-44-55-66", "P789012-1BC-045")
+    id1 = wol_manager.update_mac_address("6C-02-E0-00-8D-39", "PC1")
+    id2 = wol_manager.update_mac_address("AA-BB-CC-DD-EE-FF", "PC1")
+    id3 = wol_manager.update_mac_address("11-22-33-44-55-66", "PC2")
     print(f"IDs inserted: {id1}, {id2}, {id3}")
 
     # Reading MAC addresses for a given name
-    print("\nLecture des adresses MAC pour 'P123456-0AZ-032':")
-    mac_list = wol_manager.read_mac_address("P123456-0AZ-032")
+    print("\nLecture des adresses MAC pour 'PC1':")
+    mac_list = wol_manager.read_mac_address("PC1")
     for mac in mac_list:
         print(f"  - {mac}")
 

@@ -2,3 +2,15 @@ ping3>=4.0.4
 pywin32>=306  # Pour Windows uniquement
 cryptography>=41.0.0
 wakeonlan>=3.0.0
+
+# for psexec
+pypsexec
+smbprotocol
+
+# for winrm
+pywinrm
+requests-ntlm
+ntlm-auth
+
+# for building
+pyinstaller

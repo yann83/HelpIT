@@ -124,7 +124,7 @@ class ProcessManager:
         """
         # Check if CSV file exists
         if not self.csv_filename.exists():
-            messagebox.showerror("Error", f"CSV file not found: {self.csv_filename}")
+            messagebox.showerror("Error", f"CSV file not found: {self.csv_filename}", parent=self.window)
             logging.error(f"CSV file not found: {self.csv_filename}")
             return
 
@@ -183,7 +183,7 @@ class ProcessManager:
                 logging.info(f"Loaded {row_index} processes from {self.csv_filename}")
 
         except Exception as e:
-            messagebox.showerror("Error", f"Error reading CSV file: {e}")
+            messagebox.showerror("Error", f"Error reading CSV file: {e}", parent=self.window)
             logging.error(f"Error reading CSV file {self.csv_filename}: {e}")
 
     def _kill_process(self, process_name: str) -> None:
@@ -196,7 +196,8 @@ class ProcessManager:
         # Confirm action with user
         response = messagebox.askyesno(
             "Confirm",
-            f"Are you sure you want to kill process '{process_name}'?"
+            f"Are you sure you want to kill process '{process_name}'?",
+            parent=self.window
         )
 
         if not response:
@@ -221,12 +222,13 @@ class ProcessManager:
                 # Failure: show error message
                 messagebox.showerror(
                     "Error",
-                    f"Failed to kill process '{process_name}'"
+                    f"Failed to kill process '{process_name}'",
+                    parent = self.window
                 )
                 logging.error(f"Failed to kill process '{process_name}' on {self.current_hostname}")
 
         except Exception as e:
-            messagebox.showerror("Error", f"Error killing process: {e}")
+            messagebox.showerror("Error", f"Error killing process: {e}", parent=self.window)
             logging.error(f"Error killing process '{process_name}': {e}")
 
     def _refresh_process_list(self):
@@ -251,7 +253,7 @@ class ProcessManager:
             logging.info(f"Process list refreshed for {self.current_hostname}")
 
         except Exception as e:
-            messagebox.showerror("Error", f"Error refreshing process list: {e}")
+            messagebox.showerror("Error", f"Error refreshing process list: {e}", parent=self.window)
             logging.error(f"Error refreshing process list for {self.current_hostname}: {e}")
 
     def show(self):

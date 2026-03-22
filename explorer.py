@@ -319,6 +319,13 @@ class DualFileExplorer:
             width=14
         ).pack(pady=5)
 
+        ttk.Button(
+            middle_frame,
+            text="→ 📁 Folder →",
+            command=self._create_remote_folder,
+            width=14
+        ).pack(pady=5)
+
         ttk.Separator(middle_frame, orient=tk.HORIZONTAL).pack(fill=tk.X, pady=10)
 
         ttk.Button(
@@ -816,6 +823,110 @@ class DualFileExplorer:
 
         # Preserve file metadata (timestamps, permissions)
         shutil.copystat(src, dst)
+
+
+    def _create_remote_folder(self):
+        """
+        Open a small dialog to create a new folder in the right (remote) panel.
+
+        Displays a modal window with a text input and an OK button.
+        The folder is created inside the currently displayed remote directory.
+        The right panel is refreshed automatically on success.
+        """
+        # Build the dialog window
+        dialog = tk.Toplevel(self.root)
+        dialog.title("New folder")
+        dialog.resizable(False, False)
+        dialog.transient(self.root)  # Attach to the main explorer window
+        dialog.grab_set()  # Block interaction with other windows
+
+        # --- Content ---
+        ttk.Label(
+            dialog,
+            text="Folder name:",
+            font=('Arial', 10)
+        ).pack(padx=20, pady=(15, 5))
+
+        folder_name_var = tk.StringVar()
+        name_entry = ttk.Entry(dialog, textvariable=folder_name_var, width=30)
+        name_entry.pack(padx=20, pady=5)
+        name_entry.focus_set()  # Set focus on the input field when dialog opens
+
+        # Status label to show validation errors inline (no popup)
+        status_var = tk.StringVar(value="")
+        status_label = ttk.Label(
+            dialog,
+            textvariable=status_var,
+            foreground="red",
+            font=('Arial', 8)
+        )
+        status_label.pack(padx=20)
+
+        def _on_ok():
+            """Validate the folder name and create the directory on the remote share."""
+            folder_name = folder_name_var.get().strip()
+
+            # --- Input validation ---
+            if not folder_name:
+                status_var.set("Please enter a folder name.")
+                return
+
+            # Characters forbidden in Windows folder names
+            forbidden_chars = r'\/:*?"<>|'
+            if any(char in folder_name for char in forbidden_chars):
+                status_var.set(f'Forbidden characters: {forbidden_chars}')
+                return
+
+            # Build the full destination path inside the current remote directory
+            new_folder_path = os.path.join(self.right_path, folder_name)
+
+            # Check if folder already exists
+            if os.path.exists(new_folder_path):
+                status_var.set("A folder with this name already exists.")
+                return
+
+            try:
+                os.makedirs(new_folder_path)
+                self.status_var.set(f"✅ Folder '{folder_name}' created in {self.right_path}")
+                dialog.destroy()
+                # Refresh the right panel to show the new folder
+                self._refresh_right()
+
+            except PermissionError:
+                status_var.set("Permission denied.")
+            except OSError as e:
+                status_var.set(f"Error: {e.strerror}")
+
+        # Pressing Enter in the input field triggers OK
+        name_entry.bind('<Return>', lambda e: _on_ok())
+
+        # --- Buttons ---
+        btn_frame = ttk.Frame(dialog)
+        btn_frame.pack(pady=(10, 15))
+
+        ttk.Button(
+            btn_frame,
+            text="OK",
+            width=10,
+            command=_on_ok
+        ).pack(side=tk.LEFT, padx=5)
+
+        ttk.Button(
+            btn_frame,
+            text="Cancel",
+            width=10,
+            command=dialog.destroy
+        ).pack(side=tk.LEFT, padx=5)
+
+        # Center the dialog on the explorer window
+        dialog.update_idletasks()
+        exp_x = self.root.winfo_x()
+        exp_y = self.root.winfo_y()
+        exp_w = self.root.winfo_width()
+        exp_h = self.root.winfo_height()
+        dlg_w = dialog.winfo_width()
+        dlg_h = dialog.winfo_height()
+        dialog.geometry(f"+{exp_x + (exp_w - dlg_w) // 2}+{exp_y + (exp_h - dlg_h) // 2}")
 
 
     def _delete_selected(self):
